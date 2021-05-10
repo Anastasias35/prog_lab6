@@ -8,7 +8,6 @@ import Common.data.Worker;
 
 //класс обработки запроса и формирования ответа для отправки клиенту
 public class ProcessingOfRequest {
-    //private CollectionManager collectionManager;
     private CommandManager commandManager;
 
     public  ProcessingOfRequest(CommandManager commandManager){

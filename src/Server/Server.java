@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -108,25 +109,31 @@ public class Server {
             System.out.println("Запуск сервера");
             System.out.println("Сервер успешно запущен");
             Scanner scanner =new Scanner(System.in);
-            Runnable runnable=()->{
-                try{
-                    while(true){
-                        String[]userCommand = (scanner.nextLine().trim() + " ").split(" ", 2);
+            Runnable runnable=()-> {
+                try {
+                    while (true) {
+                        String[] userCommand = (scanner.nextLine().trim() + " ").split(" ", 2);
                         userCommand[0].trim();
-                        if(userCommand[0].equals("save")){
-                            Response response=processingOfRequest.getResponse(new Request(userCommand[0],userCommand[1]));
-                        }
-                        else if(userCommand[0].equals("exit")){
+                        if (userCommand[0].equals("save")) {
+                            Response response = processingOfRequest.getResponse(new Request(userCommand[0], userCommand[1]));
+                        } else if (userCommand[0].equals("exit")) {
                             System.exit(0);
-                        }
-                        else {
+                        } else {
                             System.out.println("Сервер не считывает такую команду с консоли");
                         }
                     }
-                }catch(Exception exception){}
+                }catch ( Exception exception){
+            }
             };
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                public void run() {
+                    System.out.println("Выход");
+                }
+            });
             Thread thread=new Thread(runnable);
             thread.start();
+
+
             ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.configureBlocking(false);
             ServerSocket serverSocket = serverSocketChannel.socket();
@@ -145,11 +152,10 @@ public class Server {
                     socketChannel.close();
                 }
             }
-        } catch (ClassNotFoundException e) {
+        }catch (ClassNotFoundException e) {
             System.out.println("Произошла ошибка при чтении данных");
         }catch (IOException exception){
             System.out.println();
-
         }
     }
 

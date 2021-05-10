@@ -32,7 +32,7 @@ public class StringResponse {
     }
 
     public static void appendError(Object obj){
-        stringBuilder.append(obj);
+        stringBuilder.append(obj+"\n");
     }
 
 }
